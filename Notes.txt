@@ -1,0 +1,21 @@
+// Express.json() - Middleware for parsing req.body without
+which req.body will be undefined
+
+// req.params contains request params 
+e.g in route /users/:id
+/users/alph123
+
+req.params.id = alph123
+
+__________
+
+req.query contains fields for filtering
+/users?sort=id&fields=name,age
+req.query ={
+  fields : ['name','age'],
+  sort  : 'id'
+}
+
+
+______--
+
