@@ -1,3 +1,7 @@
+require('dotenv').config({
+  path: './config.env',
+});
+
 const express = require('express');
 const morgan = require('morgan');
 // const userRouter = require("./routers/users.js")
@@ -5,6 +9,8 @@ const userRouter = require('./routers/users');
 // const todoRouter = require('./routers/todos');
 
 const app = express();
+
+console.log('process.env.NODE_ENV', process.env.NODE_ENV);
 
 app.use('*', (req, res, next) => {
   console.log('Hello from middleware');
