@@ -6,12 +6,26 @@ const userRouter = require('./routers/users');
 
 const app = express();
 
+app.use('*', (req, res, next) => {
+  console.log('Hello from middleware');
+
+  next();
+});
+
 app.use(morgan('dev'));
 app.use(express.json());
 
 // 5000/users
 
-app.use('/users', userRouter);
+app.use(
+  '/users',
+  (req, res, next) => {
+    console.log('hello 1');
+
+    next();
+  },
+  userRouter
+);
 // app.use('/todos', todoRouter);
 
 app.all('*', (req, res) => {

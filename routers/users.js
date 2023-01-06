@@ -22,13 +22,22 @@ const users = [
 ];
 
 // * Get ALl Users
-router.get('/', (req, res) => {
-  // res.send('Hello World');
-  res.status(200).json({
-    status: 'success',
-    users,
-  });
-});
+router.get(
+  '/',
+
+  (req, res, next) => {
+    console.log('hello 1');
+
+    next();
+  },
+  (req, res) => {
+    // res.send('Hello World');
+    res.status(200).json({
+      status: 'success',
+      users,
+    });
+  }
+);
 
 // * Get Single User
 // ! users/123/ali
