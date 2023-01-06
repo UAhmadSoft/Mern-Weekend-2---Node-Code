@@ -2,6 +2,8 @@ require('dotenv').config({
   path: './config.env',
 });
 
+const mongoose = require('mongoose');
+
 const express = require('express');
 const morgan = require('morgan');
 // const userRouter = require("./routers/users.js")
@@ -9,6 +11,16 @@ const userRouter = require('./routers/users');
 // const todoRouter = require('./routers/todos');
 
 const app = express();
+
+console.log('process.env.DATABASE', process.env.DATABASE);
+
+mongoose
+  // .connect('mongodb://127.0.0.1:27017/test') for local mongodb
+  .connect(process.env.DATABASE)
+  .then(() => console.log('Connected!'))
+  .catch((err) => {
+    console.log('err', err);
+  });
 
 console.log('process.env.NODE_ENV', process.env.NODE_ENV);
 
