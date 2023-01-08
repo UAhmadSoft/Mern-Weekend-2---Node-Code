@@ -15,13 +15,13 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     maxlength: [20, 'must be less than or equal to 20'],
-    minlength: [3, 'must be greater than 3'],
+    minlength: [8, 'must be greater than 8'],
     select: false,
   },
   passwordConfirm: {
     type: String,
     maxlength: [20, 'must be less than or equal to 20'],
-    minlength: [3, 'must be greater than 3'],
+    minlength: [8, 'must be greater than 8'],
     validate: {
       // This only works on CREATE and SAVE!!!
       validator: function (el) {
