@@ -1,5 +1,6 @@
 const User = require('../models/userModel');
 // const bcrypt = require('../node_modules/bcrypt') Wrong Method
+const jwt = require('jsonwebtoken');
 
 exports.getAllUsers = async (req, res) => {
   const users = await User.find();
@@ -69,6 +70,48 @@ exports.getUser = async (req, res) => {
   });
 
   // console.log(req.params);
+};
+
+exports.login = async (req, res) => {
+  let user = await User.findOne({ email: req.body.email }).select(
+    '+password -__v'
+  );
+
+  if (!user)
+    return res.status(404).json({
+      status: 'fail',
+      message: `No user found against email ${req.body.email}`,
+    });
+
+  const isMatched = await user.comparePassword(
+    req.body.password,
+    user.password
+  );
+
+  if (!isMatched)
+    return res.status(401).json({
+      status: 'failed',
+      message: 'Password Not Correct',
+    });
+
+  // * Create token
+  const token = jwt.sign(
+    {
+      id: user._id,
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: '2d',
+    }
+  );
+
+  console.log('token', token);
+
+  res.status(200).json({
+    status: 'success',
+    user,
+    token,
+  });
 };
 
 exports.createUser = async (req, res) => {
