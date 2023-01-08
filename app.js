@@ -14,14 +14,6 @@ const app = express();
 
 console.log('process.env.DATABASE', process.env.DATABASE);
 
-mongoose
-  // .connect('mongodb://127.0.0.1:27017/test') for local mongodb
-  .connect(process.env.DATABASE)
-  .then(() => console.log('Connected!'))
-  .catch((err) => {
-    console.log('err', err);
-  });
-
 console.log('process.env.NODE_ENV', process.env.NODE_ENV);
 
 app.use('*', (req, res, next) => {
@@ -46,6 +38,16 @@ app.all('*', (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Listening to server ${PORT} `);
-});
+
+mongoose
+  // .connect('mongodb://127.0.0.1:27017/test') for local mongodb
+  .connect(process.env.DATABASE)
+  .then(() => {
+    console.log('Connected!');
+    app.listen(PORT, () => {
+      console.log(`Listening to server ${PORT} `);
+    });
+  })
+  .catch((err) => {
+    console.log('err', err);
+  });
