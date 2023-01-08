@@ -1,6 +1,5 @@
 const User = require('../models/userModel');
 // const bcrypt = require('../node_modules/bcrypt') Wrong Method
-const bcrypt = require('bcrypt');
 
 exports.getAllUsers = async (req, res) => {
   const users = await User.find();
@@ -84,25 +83,6 @@ exports.createUser = async (req, res) => {
   // bcrypt.hash(myPlaintextPassword, 11, function (err, hash) {
   //   // Store hash in your password DB.
   // });
-  try {
-    const hash = await bcrypt.hash(user.password, 11);
-    console.log('hash', hash);
-
-    user.password = hash;
-    user.passwordConfirm = undefined;
-    await user.save({
-      validateBeforeSave: false,
-    });
-
-    // User.findByIdAndUpdate(user.id ,{
-    //   password  : hash
-    // }, {new : true})
-  } catch (err) {
-    console.log('err', err);
-    return res.json({
-      message: err.message,
-    });
-  }
   // bcrypt.hash(myPlaintextPassword, 11, function (err, hash) {
   //   // Store hash in your password DB.
   // });
