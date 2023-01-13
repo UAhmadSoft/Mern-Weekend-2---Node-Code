@@ -8,6 +8,7 @@ const express = require('express');
 const morgan = require('morgan');
 // const userRouter = require("./routers/users.js")
 const userRouter = require('./routers/usersRouter');
+const globalErrorHandler = require('./middlewares/globalErrorHandler');
 // const todoRouter = require('./routers/todos');
 
 const app = express();
@@ -39,15 +40,18 @@ app.all('*', (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
+app.use(globalErrorHandler);
+
 mongoose
   // .connect('mongodb://127.0.0.1:27017/test') for local mongodb
   .connect(process.env.DATABASE)
   .then(() => {
     console.log('Connected!');
-    app.listen(PORT, () => {
-      console.log(`Listening to server ${PORT} `);
-    });
   })
   .catch((err) => {
     console.log('err', err);
   });
+
+app.listen(PORT, () => {
+  console.log(`Listening to server ${PORT} `);
+});

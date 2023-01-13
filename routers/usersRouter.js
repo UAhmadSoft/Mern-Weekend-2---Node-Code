@@ -12,7 +12,8 @@ router.post('/login', userController.login);
 // * Get Single User
 // ! users/123/ali
 router.delete('/:id', userController.deleteUser);
-router.get('/:id', protect, restrictTo('admin'), userController.getUser);
+// router.get('/:id', protect, restrictTo('admin'), userController.getUser);
+router.get('/:id', userController.getUser);
 
 // Create
 router.post('/', userController.createUser);

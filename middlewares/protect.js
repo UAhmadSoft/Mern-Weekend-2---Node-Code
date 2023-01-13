@@ -1,17 +1,14 @@
 const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
 const User = require('../models/userModel');
+const AppError = require('../utils/appError');
 
 const protect = async (req, res, next) => {
   try {
     const token = req.headers.authorization.split(' ')[1];
     console.log('token', token);
 
-    if (!token)
-      return res.status(401).json({
-        status: 'failed',
-        message: 'You must login first',
-      });
+    if (!token) return next(new AppError('You must login first', 401));
 
     // const jwtPayload =  jwt.verify(token , process.env.JWT_SECRET)
     // * promisfy is converting callback return to promise return so
@@ -27,17 +24,13 @@ const protect = async (req, res, next) => {
     const user = await User.findById(jwtPayload.id);
 
     if (!user)
-      return res.status(404).json({
-        status: 'failed',
-        message: `No user found agains id ${jwtPayload.id}`,
-      });
+      return next(
+        new AppError(`No user found agains id ${jwtPayload.id}`, 401)
+      );
 
     req.user = user;
   } catch (err) {
-    return res.status(401).json({
-      status: 'failed',
-      message: err.message || 'Unauthorizes',
-    });
+    return next(new AppError(err.message || 'YOu must login first', 401));
   }
 
   next();
