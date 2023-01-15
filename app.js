@@ -8,6 +8,7 @@ const express = require('express');
 const morgan = require('morgan');
 // const userRouter = require("./routers/users.js")
 const userRouter = require('./routers/usersRouter');
+const productRouter = require('./routers/ProductRouter');
 const globalErrorHandler = require('./middlewares/globalErrorHandler');
 // const todoRouter = require('./routers/todos');
 
@@ -28,7 +29,8 @@ app.use(express.json());
 
 // 5000/users
 
-app.use('/users', userRouter);
+app.use('/auth/users', userRouter);
+app.use('/api/products', productRouter);
 // app.use('/todos', todoRouter);
 
 app.all('*', (req, res) => {

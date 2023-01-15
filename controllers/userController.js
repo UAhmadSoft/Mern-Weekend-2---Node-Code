@@ -5,14 +5,65 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
 exports.getAllUsers = catchAsync(async (req, res) => {
-  const users = await User.find();
+  let query = User.find(); //! return query
+
+  // ! 1 Sorting .sort("-createdAt firstName")
+  console.log('req.query.sort', req.query.sort);
+
+  // ! "firstName,-age"
+  // ! ["firstName" , "-age"]
+  // ! "firstName -age"
+  if (req.query.sort) {
+    const sortQuery = req.query.sort.split(',').join(' ');
+    console.log('sortQuery', sortQuery);
+    query = query.sort(sortQuery);
+  }
+
+  // ! Fields Limitings - .select("firstName lastName")
+  if (req.query.fields) {
+    const fieldsQuery = req.query.fields.split(',').join(' ');
+    console.log('fieldsQuery', fieldsQuery);
+    query = query.select(fieldsQuery);
+  }
+  // ! Pagination - .skip(10).limit(5)
+  // ! 10 users per page , page no 2
+  // ! skip( (page - 1) * limit).limit(20)
+  // ! page = 2 , limit = 5
+  if (req.query.page) {
+    const page = req.query.page;
+    const limit = req.query.limit;
+
+    query = query.skip((page - 1) * limit).limit(limit);
+  }
+
+  console.log('req.query.role', req.query.role);
+  if (req.query.role) {
+    console.log('query');
+    query = query.find({
+      role: req.query.role,
+    });
+  }
+
+  const users = await query;
 
   res.status(200).json({
     status: 'success',
+    results: users.length,
     users,
   });
 });
 
+exports.deleteUsers = catchAsync(async (req, res, next) => {
+  const users = await User.deleteMany();
+
+  res.status(200).json({
+    staus: 'success',
+    // user  : user ,
+    users,
+  });
+
+  // console.log(req.params);
+});
 exports.deleteUser = catchAsync(async (req, res, next) => {
   const { id } = req.params;
 
