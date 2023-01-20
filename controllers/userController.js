@@ -53,6 +53,13 @@ exports.getAllUsers = catchAsync(async (req, res) => {
   });
 });
 
+exports.updateMe = catchAsync(async (req, res, next) => {
+  console.log('req.body', req.body);
+  console.log('req.files', req.files);
+  console.log('req.file', req.file);
+  res.end('good');
+});
+
 exports.deleteUsers = catchAsync(async (req, res, next) => {
   const users = await User.deleteMany();
 

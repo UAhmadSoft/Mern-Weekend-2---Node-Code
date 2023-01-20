@@ -3,6 +3,8 @@ const userController = require('../controllers/userController');
 const protect = require('../middlewares/protect');
 const restrictTo = require('../middlewares/restrictTo');
 const router = express.Router();
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
 
 // * Get ALl Users
 router.get('/', protect, userController.getAllUsers);
@@ -18,6 +20,7 @@ router.get('/me', protect, (req, res, next) => {
     user: req.user,
   });
 });
+router.patch('/me', protect, upload.single('image'), userController.updateMe);
 router.delete('/:id', userController.deleteUser);
 router.get('/:id', protect, restrictTo('admin'), userController.getUser);
 // router.get('/:id', userController.getUser);

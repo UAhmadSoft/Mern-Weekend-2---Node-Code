@@ -41,6 +41,7 @@ const userSchema = new mongoose.Schema(
       },
       select: false,
     },
+    image: String,
     age: Number,
     isActivated: {
       type: Boolean,
