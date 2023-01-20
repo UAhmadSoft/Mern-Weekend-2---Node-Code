@@ -2,6 +2,7 @@ require('dotenv').config({
   path: './config.env',
 });
 
+const path = require('path');
 const mongoose = require('mongoose');
 
 const express = require('express');
@@ -17,6 +18,8 @@ const app = express();
 console.log('process.env.DATABASE', process.env.DATABASE);
 
 console.log('process.env.NODE_ENV', process.env.NODE_ENV);
+
+app.use(express.static(path.join(__dirname, 'uploads')));
 
 app.use('*', (req, res, next) => {
   console.log('Hello from middleware');
