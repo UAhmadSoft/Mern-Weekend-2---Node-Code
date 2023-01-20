@@ -57,7 +57,23 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   console.log('req.body', req.body);
   console.log('req.files', req.files);
   console.log('req.file', req.file);
-  res.end('good');
+
+  const user = await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      ...req.body,
+      image: req.file.path,
+    },
+    {
+      isNew: true,
+      // runValidators: false,
+    }
+  );
+
+  res.json({
+    status: 'Success',
+    user,
+  });
 });
 
 exports.deleteUsers = catchAsync(async (req, res, next) => {

@@ -4,7 +4,23 @@ const protect = require('../middlewares/protect');
 const restrictTo = require('../middlewares/restrictTo');
 const router = express.Router();
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads');
+  },
+  filename: function (req, file, cb) {
+    console.log('file', file);
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    let ext = file.mimetype.split('/');
+    console.log('ext', ext);
+    ext = ext[1];
+    console.log('ext', ext);
+    cb(null, file.fieldname + '-' + uniqueSuffix + '.' + ext);
+  },
+});
+
+const upload = multer({ storage });
 
 // * Get ALl Users
 router.get('/', protect, userController.getAllUsers);

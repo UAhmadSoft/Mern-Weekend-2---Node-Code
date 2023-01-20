@@ -30,7 +30,9 @@ exports.addNewProduct = catchAsync(async (req, res, next) => {
   const user = await User.findById(req.user._id);
 
   user.products = [...user.products, product._id];
-  await user.save();
+  // await user.save({
+  //   validateBeforeSave : false
+  // });
 
   res.status(201).json({
     status: 'success',
