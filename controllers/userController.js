@@ -3,6 +3,8 @@ const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
+const teacherModel = require('../models/Teacher');
+const studentModel = require('../models/Student');
 
 exports.getAllUsers = catchAsync(async (req, res) => {
   let query = User.find(); //! return query
@@ -185,6 +187,64 @@ exports.createUser = catchAsync(async (req, res, next) => {
 
   // * Run Validations
   let user = await User.create({
+    ...req.body,
+  });
+
+  // bcrypt.hash(myPlaintextPassword, 11, function (err, hash) {
+  //   // Store hash in your password DB.
+  // });
+  // bcrypt.hash(myPlaintextPassword, 11, function (err, hash) {
+  //   // Store hash in your password DB.
+  // });
+
+  // const user = await User.create({
+  //   fistName : req.body.fistName
+  // })
+
+  // catch(err) {
+  //   next(err)
+  // }
+
+  res.status(201).json({
+    status: 'success',
+    user,
+  });
+});
+exports.createStudent = catchAsync(async (req, res, next) => {
+  // new user
+  console.log('req.body', req.body);
+
+  // * Run Validations
+  let user = await studentModel.create({
+    ...req.body,
+  });
+
+  // bcrypt.hash(myPlaintextPassword, 11, function (err, hash) {
+  //   // Store hash in your password DB.
+  // });
+  // bcrypt.hash(myPlaintextPassword, 11, function (err, hash) {
+  //   // Store hash in your password DB.
+  // });
+
+  // const user = await User.create({
+  //   fistName : req.body.fistName
+  // })
+
+  // catch(err) {
+  //   next(err)
+  // }
+
+  res.status(201).json({
+    status: 'success',
+    user,
+  });
+});
+exports.createTeacher = catchAsync(async (req, res, next) => {
+  // new user
+  console.log('req.body', req.body);
+
+  // * Run Validations
+  let user = await teacherModel.create({
     ...req.body,
   });
 

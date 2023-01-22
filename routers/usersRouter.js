@@ -43,6 +43,8 @@ router.get('/:id', protect, restrictTo('admin'), userController.getUser);
 
 // Create
 router.post('/', protect, userController.createUser);
+router.post('/student', userController.createStudent);
+router.post('/teacher', userController.createTeacher);
 
 // Update
 router.patch('/:id', protect, userController.updateUser);

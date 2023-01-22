@@ -68,8 +68,14 @@ const userSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    discriminatorKey: 'type',
   }
 );
+
+// * Virtuals
+userSchema.virtual('fullName').get(function () {
+  return `${this.firstName} ${this.lastName}`;
+});
 
 // * Pre Save
 // userSchema.pre('save', async function (next) {
